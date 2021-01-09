@@ -3,15 +3,17 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 import useInterval from "../hooks/use-interval.hook";
+import { useDocumentTitle, useKeydown } from "../hooks/custom-hooks"
+import items from "../data/data";
 
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 
-const items = [
-  { id: "cursor", name: "Cursor", cost: 10, value: 1 },
-  { id: "grandma", name: "Grandma", cost: 100, value: 10 },
-  { id: "farm", name: "Farm", cost: 1000, value: 80 },
-];
+// const items = [
+//   { id: "cursor", name: "Cursor", cost: 10, value: 1 },
+//   { id: "grandma", name: "Grandma", cost: 100, value: 10 },
+//   { id: "farm", name: "Farm", cost: 1000, value: 80 },
+// ];
 
 const calculateCookiesPerSecond = (purchasedItems) => {
   return Object.keys(purchasedItems).reduce((acc, itemId) => {
@@ -23,15 +25,7 @@ const calculateCookiesPerSecond = (purchasedItems) => {
   }, 0);
 };
 
-const Game = () => {
-  const [numCookies, setNumCookies] = React.useState(1000);
-
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  });
-
+const Game = ({ numCookies, setNumCookies, purchasedItems, setPurchasedItems }) => {
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };
@@ -42,27 +36,9 @@ const Game = () => {
     setNumCookies(numCookies + numOfGeneratedCookies);
   }, 1000);
 
-  React.useEffect(() => {
-    document.title = `${numCookies} cookies - Cookie Clicker Workshop`;
-
-    return () => {
-      document.title = "Cookie Clicker Workshop";
-    };
-  }, [numCookies]);
-
-  React.useEffect(() => {
-    const handleKeydown = (ev) => {
-      if (ev.code === "Space") {
-        incrementCookies();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeydown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeydown);
-    };
-  });
+  //Use Custom Hooks
+  useDocumentTitle({numCookies}, 'Cookie Clicker');
+  useKeydown("Space", incrementCookies);
 
   return (
     <Wrapper>
