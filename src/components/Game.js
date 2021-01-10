@@ -9,27 +9,10 @@ import items from "../data/data";
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 
-
-const calculateCookiesPerSecond = (purchasedItems) => {
-  return Object.keys(purchasedItems).reduce((acc, itemId) => {
-    const numOwned = purchasedItems[itemId];
-    const item = items.find((item) => item.id === itemId);
-    const value = item.value;
-
-    return acc + value * numOwned;
-  }, 0);
-};
-
-const Game = ({ numCookies, setNumCookies, purchasedItems, setPurchasedItems }) => {
+const Game = ({ numCookies, setNumCookies, purchasedItems, setPurchasedItems, cookiesPerSecond }) => {
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };
-
-  useInterval(() => {
-    const numOfGeneratedCookies = calculateCookiesPerSecond(purchasedItems);
-
-    setNumCookies(numCookies + numOfGeneratedCookies);
-  }, 1000);
 
   //Use Custom Hooks
   useDocumentTitle({numCookies}, 'Cookie Clicker');
@@ -41,7 +24,8 @@ const Game = ({ numCookies, setNumCookies, purchasedItems, setPurchasedItems }) 
       <GameArea>
         <Indicator>
           <Total>{numCookies} cookies</Total>
-          <strong>{calculateCookiesPerSecond(purchasedItems)}</strong> cookies
+          {/* <strong>{calculateCookiesPerSecond(purchasedItems)}</strong> cookies */}
+          <strong>{cookiesPerSecond}</strong> cookies
           per second
         </Indicator>
         <Button onClick={incrementCookies}>

@@ -6,14 +6,23 @@ import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
 import Game from "./Game";
 import items from "../data/data";
+import { GameContext } from "./GameContext";
+import useInterval from "../hooks/use-interval.hook";
 
 function App(props) {
-  const [numCookies, setNumCookies] = usePersistedState('num-cookies', 1000);
-  const [purchasedItems, setPurchasedItems] = React.useState({
-    cursor: 0,
-    grandma: 0,
-    farm: 0,
-  });
+  const { 
+    numCookies,
+    setNumCookies,
+    purchasedItems,
+    setPurchasedItems,
+    cookiesPerSecond,
+  } = React.useContext(
+    GameContext
+  );
+  useInterval(() => {
+    setNumCookies(numCookies + cookiesPerSecond);
+  }, 1000);
+
   return (
     <>
       <GlobalStyles />
@@ -27,6 +36,7 @@ function App(props) {
             setNumCookies={setNumCookies}
             purchasedItems={purchasedItems}
             setPurchasedItems={setPurchasedItems}
+            cookiesPerSecond={cookiesPerSecond}
           />
         </Route>
       </Router>
