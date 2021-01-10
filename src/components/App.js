@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { usePersistedState } from "../hooks/custom-hooks"
 
 import GlobalStyles from "./GlobalStyles";
 import Home from "./Home";
@@ -7,7 +8,7 @@ import Game from "./Game";
 import items from "../data/data";
 
 function App(props) {
-  const [numCookies, setNumCookies] = React.useState(1000);
+  const [numCookies, setNumCookies] = usePersistedState('num-cookies', 1000);
   const [purchasedItems, setPurchasedItems] = React.useState({
     cursor: 0,
     grandma: 0,
