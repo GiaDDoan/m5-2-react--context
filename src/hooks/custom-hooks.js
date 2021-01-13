@@ -47,4 +47,21 @@ const usePersistedState = (key, initialValue) => {
     return [value, setValue];
 }
 
+// const useBeforeUnload = () => {
+//     const [time, setTime] = React.usePersistedState('time', 0);
+
+//     React.useEffect(() => {
+//         const handleUnload = (ev) => {
+//             ev.preventDefault();
+//             ev.returnValue='';
+//             // alert('TEST');
+//             // console.log('maybe');
+//             setTime(Date.now());
+//         }
+//         // window.addEventListener('beforeunload', handleUnload);
+//         window.onbeforeunload = handleUnload;
+//     });
+//     // console.log(time);
+// }
+
 export { useDocumentTitle, useKeydown, usePersistedState };

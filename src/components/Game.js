@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { GameContext } from './GameContext';
 
 import useInterval from "../hooks/use-interval.hook";
 import { useDocumentTitle, useKeydown } from "../hooks/custom-hooks"
@@ -9,7 +10,8 @@ import items from "../data/data";
 import cookieSrc from "../cookie.svg";
 import Item from "./Item";
 
-const Game = ({ numCookies, setNumCookies, purchasedItems, setPurchasedItems, cookiesPerSecond }) => {
+const Game = ({}) => {
+  const { numCookies, setNumCookies, purchasedItems, setPurchasedItems, cookiesPerSecond, timeElapsed, setTimeElapsed } = React.useContext(GameContext);
   const incrementCookies = () => {
     setNumCookies((c) => c + 1);
   };
@@ -19,11 +21,17 @@ const Game = ({ numCookies, setNumCookies, purchasedItems, setPurchasedItems, co
   useKeydown("Space", incrementCookies);
 
 
+// console.log(numCookies,'numCookies',purchasedItems,"purchasedItems",timeElapsed,"timeElapsed")
+
+//Cookies when offline
+  const numCookiesTotal = numCookies + (timeElapsed * cookiesPerSecond);
+  console.log(numCookiesTotal,'numCookiesTotal')
+
   return (
     <Wrapper>
       <GameArea>
         <Indicator>
-          <Total>{numCookies} cookies</Total>
+          <Total>{numCookiesTotal} cookies</Total>
           {/* <strong>{calculateCookiesPerSecond(purchasedItems)}</strong> cookies */}
           <strong>{cookiesPerSecond}</strong> cookies
           per second

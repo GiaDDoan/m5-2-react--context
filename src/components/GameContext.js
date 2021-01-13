@@ -6,7 +6,6 @@ export const GameContext = React.createContext(null);
 
 export const GameProvider = ({ children }) => {
     const [numCookies, setNumCookies] = usePersistedState("numCookies", 1000);
-
     const [purchasedItems, setPurchasedItems] = usePersistedState(
         "purchasedItems",
         {
@@ -15,7 +14,10 @@ export const GameProvider = ({ children }) => {
             farm: 0,
         }
     );
+    const [time, setTime] = usePersistedState('time', 0);
+    const [timeElapsed, setTimeElapsed] = usePersistedState('timeElapsed', 0);
 
+    //Calculating cookies
     const calculateCookiesPerSecond = (purchasedItems) => {
         return Object.keys(purchasedItems).reduce((acc, itemId) => {
             const numOwned = purchasedItems[itemId];
@@ -26,6 +28,28 @@ export const GameProvider = ({ children }) => {
         }, 0);
     };
 
+//Cookies counter after the window is closed
+    React.useEffect(() => { //Can probably remove the useEffect?
+        const handleUnload = (ev) => {
+            ev.preventDefault();
+            ev.returnValue='';
+            // alert('TEST');
+            setTime(Date.now());
+        }
+        window.onbeforeunload = handleUnload;
+        // console.log(time, 'time');
+        }, []);
+
+        
+    React.useEffect(() => {
+        const timeWhenLoaded = Date.now();
+        const timeDiff = timeWhenLoaded - time;
+        setTimeElapsed(timeDiff);
+        // setNumCookies(numCookies + (timeElapsed ));
+        // console.log(timeDiff,"timeDiff")
+    }, [])
+    // console.log(timeElapsed,'GameContext');
+
     return (
     <GameContext.Provider
         value={{
@@ -34,6 +58,8 @@ export const GameProvider = ({ children }) => {
             purchasedItems,
             setPurchasedItems,
             cookiesPerSecond: calculateCookiesPerSecond(purchasedItems),
+            timeElapsed,
+            setTimeElapsed,
         }}
     >
         {children}

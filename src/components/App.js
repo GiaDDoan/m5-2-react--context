@@ -32,11 +32,11 @@ function App(props) {
         </Route>
         <Route path="/game">
           <Game 
-            numCookies={numCookies}
-            setNumCookies={setNumCookies}
-            purchasedItems={purchasedItems}
-            setPurchasedItems={setPurchasedItems}
-            cookiesPerSecond={cookiesPerSecond}
+            // numCookies={numCookies}
+            // setNumCookies={setNumCookies}
+            // purchasedItems={purchasedItems}
+            // setPurchasedItems={setPurchasedItems}
+            // cookiesPerSecond={cookiesPerSecond}
           />
         </Route>
       </Router>
